@@ -1,2 +1,2 @@
-# [Build AI Apps with ChatGPT, Dall-E and GPT-4](https://scrimba.com/learn/buildaiapps)
+# Build a movie idea generator with ChatGPT and Dall-E
 
