@@ -1,13 +1,16 @@
 import { process } from '/env'
+import { Configuration, OpenAIApi } from 'openai'
 
 
 const setupTextarea = document.getElementById('setup-textarea') 
 const setupInputContainer = document.getElementById('setup-input-container')
 const movieBossText = document.getElementById('movie-boss-text')
 
-const apiKey = process.env.OPENAI_API_KEY
-// const apiKey = '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'
-const url = 'https://api.openai.com/v1/completions'
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY
+})
+
+const openai = new OpenAIApi(configuration)
 
 document.getElementById("send-btn").addEventListener("click", () => {
   // if (setupTextarea.value) {
@@ -17,19 +20,11 @@ document.getElementById("send-btn").addEventListener("click", () => {
   fetchBotReply()
 })
 
-function fetchBotReply(){
-  fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`
-    },
-    body: JSON.stringify({
+async function fetchBotReply(){
+  const response = await openai.createCompletion({
       'model': 'text-davinci-003',
       'prompt': 'Sound enthusiastic in five words or less.' 
-    })
-  }).then(response => response.json()).then(data => 
-  movieBossText.innerText = data.choices[0].text
-  )
+  })
+  movieBossText.innerText = response.data.choices[0].text.trim()
 }
-
+// [{text: " Excited, Enthusiastic, Driven!",
